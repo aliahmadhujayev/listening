@@ -378,9 +378,27 @@ class App {
     // Asosiy Exercise header va footer tugmalari
     container.innerHTML = `
       <div class="exercise-header card">
-        <div class="ex-meta">
-          <span class="part-tag">${ex.part}</span>
-          <span class="num-tag">Exercise ${ex.number}</span>
+        <div class="ex-header-top-row">
+          <div class="ex-meta">
+            <span class="part-tag">${ex.part}</span>
+            <span class="num-tag">Exercise ${ex.number}</span>
+          </div>
+          <div class="ex-top-nav-buttons">
+            ${prevEx ? `
+              <button class="btn btn-outline btn-sm nav-jump-btn" data-target-id="${prevEx.id}">
+                ⬅ Oldingi
+              </button>
+            ` : ""}
+            ${nextEx ? `
+              <button class="btn btn-primary btn-sm nav-jump-btn font-bold" data-target-id="${nextEx.id}">
+                Keyingi mashq (Ex ${nextEx.number}) ➔
+              </button>
+            ` : `
+              <button class="btn btn-warning btn-sm nav-finish-btn font-bold">
+                🏆 Reyting ➔
+              </button>
+            `}
+          </div>
         </div>
         <h1 class="exercise-main-title">${ex.title}</h1>
         <p class="instruction-text">${ex.instruction}</p>
@@ -453,10 +471,31 @@ class App {
       };
     });
 
+    // Yuqori panel Navigatsiya tugmalari
+    container.querySelectorAll(".nav-jump-btn").forEach(btn => {
+      btn.onclick = () => {
+        this.saveAnswersSilently();
+        const targetId = btn.getAttribute("data-target-id");
+        if (targetId) {
+          this.openExerciseById(targetId);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      };
+    });
+
+    container.querySelectorAll(".nav-finish-btn").forEach(btn => {
+      btn.onclick = () => {
+        this.saveAnswersSilently();
+        this.switchView("leaderboard");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+    });
+
     // Prev / Next navigatsiya tugmalari
     const prevBtn = document.getElementById("prevExerciseBtn");
     if (prevBtn) {
       prevBtn.onclick = () => {
+        this.saveAnswersSilently();
         const targetId = prevBtn.getAttribute("data-target-id");
         if (targetId) {
           this.openExerciseById(targetId);
@@ -468,6 +507,7 @@ class App {
     const nextBtn = document.getElementById("nextExerciseBtn");
     if (nextBtn) {
       nextBtn.onclick = () => {
+        this.saveAnswersSilently();
         const targetId = nextBtn.getAttribute("data-target-id");
         if (targetId) {
           this.openExerciseById(targetId);
@@ -479,6 +519,7 @@ class App {
     const finishBtn = document.getElementById("finishAllBtn");
     if (finishBtn) {
       finishBtn.onclick = () => {
+        this.saveAnswersSilently();
         this.switchView("leaderboard");
         window.scrollTo({ top: 0, behavior: "smooth" });
       };
@@ -707,6 +748,47 @@ class App {
       });
       // Sidebar va foydalanuvchi ma'lumotlarini yangilash
       this.updateUserUI();
+    }
+  }
+
+  // Javoblarni jimgina (tekshiruv ranglarini chiqarmasdan) saqlash
+  saveAnswersSilently() {
+    const ex = this.currentExercise;
+    const user = window.authManager.getUser();
+    if (!ex || !user) return;
+
+    const userAnswers = {};
+    const inputs = document.querySelectorAll("#exerciseWorkArea .answer-input");
+    inputs.forEach(input => {
+      const inputId = input.getAttribute("data-id");
+      const userVal = input.value.trim();
+      if (userVal) userAnswers[inputId] = userVal;
+    });
+
+    // Harf tanlash
+    document.querySelectorAll("#exerciseWorkArea .btn-choice-letter.selected").forEach(btn => {
+      const rowId = btn.getAttribute("data-row-id");
+      const val = btn.getAttribute("data-val");
+      if (rowId && val) userAnswers[rowId] = val;
+    });
+
+    if (Object.keys(userAnswers).length > 0) {
+      if (!user.results) user.results = {};
+      if (!user.results[ex.id]) {
+        user.results[ex.id] = {
+          correct: 0,
+          total: 0,
+          percent: 0,
+          userAnswers: userAnswers,
+          completedAt: new Date().toISOString()
+        };
+      } else {
+        user.results[ex.id].userAnswers = {
+          ...user.results[ex.id].userAnswers,
+          ...userAnswers
+        };
+      }
+      window.storageManager.saveUser(user);
     }
   }
 
