@@ -75,9 +75,10 @@ class App {
       const idEl = document.getElementById("sidebarUserId");
       const scoreEl = document.getElementById("sidebarUserScore");
 
+      const totalExCount = window.getAllUnits().reduce((sum, un) => sum + un.exercises.length, 0);
       if (nameEl) nameEl.textContent = user.name;
       if (idEl) idEl.textContent = `ID: ${user.phoneId}`;
-      if (scoreEl) scoreEl.textContent = `${user.solvedCount || 0}/11 mashq (${user.accuracy || 0}%)`;
+      if (scoreEl) scoreEl.textContent = `${user.solvedCount || 0}/${totalExCount} mashq (${user.accuracy || 0}%)`;
     } else {
       if (userCard) userCard.style.display = "none";
       if (loginPrompt) loginPrompt.style.display = "block";
@@ -119,6 +120,19 @@ class App {
     });
 
     container.innerHTML = html;
+
+    // Unit sarlavhasini bosganda ochish/yopish (Accordion)
+    container.querySelectorAll(".unit-title-toggle").forEach(toggle => {
+      toggle.onclick = () => {
+        const list = toggle.nextElementSibling;
+        const arrow = toggle.querySelector(".arrow");
+        if (list) {
+          const isHidden = list.style.display === "none";
+          list.style.display = isHidden ? "block" : "none";
+          if (arrow) arrow.textContent = isHidden ? "▼" : "▶";
+        }
+      };
+    });
 
     // Mashqlarga click hodisasini ulash
     container.querySelectorAll(".exercise-nav-item").forEach(item => {
@@ -162,6 +176,12 @@ class App {
     if (this.audioPlayer) {
       this.audioPlayer.setTrack(exercise.audio, `${unit.title} — ${exercise.title}`);
     }
+
+    // Top Header sarlavhasini yangilash
+    const headerTitle = document.getElementById("topHeaderTitle");
+    const headerBadge = document.getElementById("topHeaderBadge");
+    if (headerTitle) headerTitle.textContent = `${unit.title} — ${exercise.title}`;
+    if (headerBadge) headerBadge.textContent = `${unit.title.split(":")[0]}: Ex ${exercise.number}`;
 
     // Mashq kontentini chizish
     this.renderExerciseContent(exercise);

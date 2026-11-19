@@ -62,6 +62,8 @@ class LeaderboardComponent {
       return;
     }
 
+    const totalUnitsEx = window.getAllUnits().reduce((sum, un) => sum + un.exercises.length, 0);
+
     let rowsHtml = users.map((u, index) => {
       const rank = index + 1;
       let rankBadge = rank;
@@ -93,7 +95,7 @@ class LeaderboardComponent {
             </div>
           </td>
           <td class="font-mono text-muted">ID: ${phoneDisplay}</td>
-          <td class="text-center font-bold">${u.solvedCount || 0} / 11</td>
+          <td class="text-center font-bold">${u.solvedCount || 0} / ${totalUnitsEx}</td>
           <td class="text-center text-success font-bold">${u.totalCorrect || 0} ball</td>
           <td class="text-center">
             <div class="accuracy-bar-container">

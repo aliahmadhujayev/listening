@@ -1,11 +1,11 @@
 /**
  * Central Data Loader
- * Kelajakda yangi unitlar (unit2, unit3, ...) shu yerga import qilinadi yoki massivga qo'shiladi.
+ * Unit 1 va Unit 2 modullarini birlashtiradi.
  */
 
 window.IELTS_UNITS = [
-  window.unit1Data
-  // Keyinchalik: window.unit2Data, window.unit3Data ...
+  window.unit1Data,
+  window.unit2Data
 ];
 
 window.getAllUnits = function() {
