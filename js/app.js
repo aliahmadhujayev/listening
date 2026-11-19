@@ -367,6 +367,14 @@ class App {
       contentHtml += `</div>`;
     }
 
+    // Oldingi va Keyingi mashqlarni aniqlash
+    const allUnits = window.getAllUnits();
+    let allExercises = [];
+    allUnits.forEach(u => allExercises.push(...u.exercises));
+    const currentIndex = allExercises.findIndex(e => e.id === ex.id);
+    const prevEx = currentIndex > 0 ? allExercises[currentIndex - 1] : null;
+    const nextEx = currentIndex < allExercises.length - 1 ? allExercises[currentIndex + 1] : null;
+
     // Asosiy Exercise header va footer tugmalari
     container.innerHTML = `
       <div class="exercise-header card">
@@ -385,6 +393,11 @@ class App {
 
       <div class="exercise-action-bar card">
         <div class="action-buttons-group">
+          ${prevEx ? `
+            <button id="prevExerciseBtn" class="btn btn-outline btn-lg" data-target-id="${prevEx.id}">
+              ⬅ Oldingi (Ex ${prevEx.number})
+            </button>
+          ` : ""}
           <button id="checkAnswersBtn" class="btn btn-success btn-lg">
             ✓ Check Answers
           </button>
@@ -394,6 +407,15 @@ class App {
           <button id="toggleScriptBtn" class="btn btn-secondary btn-lg">
             📜 Show Script
           </button>
+          ${nextEx ? `
+            <button id="nextExerciseBtn" class="btn btn-primary btn-lg" data-target-id="${nextEx.id}">
+              Keyingi mashq (Ex ${nextEx.number}) ➔
+            </button>
+          ` : `
+            <button id="finishAllBtn" class="btn btn-warning btn-lg">
+              🏆 Reytingni ko'rish
+            </button>
+          `}
         </div>
 
         <div id="exerciseResultSummary" class="exercise-result-summary" style="display:none;"></div>
@@ -430,6 +452,37 @@ class App {
         btn.classList.add("selected");
       };
     });
+
+    // Prev / Next navigatsiya tugmalari
+    const prevBtn = document.getElementById("prevExerciseBtn");
+    if (prevBtn) {
+      prevBtn.onclick = () => {
+        const targetId = prevBtn.getAttribute("data-target-id");
+        if (targetId) {
+          this.openExerciseById(targetId);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      };
+    }
+
+    const nextBtn = document.getElementById("nextExerciseBtn");
+    if (nextBtn) {
+      nextBtn.onclick = () => {
+        const targetId = nextBtn.getAttribute("data-target-id");
+        if (targetId) {
+          this.openExerciseById(targetId);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      };
+    }
+
+    const finishBtn = document.getElementById("finishAllBtn");
+    if (finishBtn) {
+      finishBtn.onclick = () => {
+        this.switchView("leaderboard");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+    }
 
     // Check Answers
     const checkBtn = document.getElementById("checkAnswersBtn");
@@ -603,11 +656,44 @@ class App {
     const summaryBox = document.getElementById("exerciseResultSummary");
     if (summaryBox) {
       summaryBox.style.display = "block";
+
+      const allUnits = window.getAllUnits();
+      let allExercises = [];
+      allUnits.forEach(u => allExercises.push(...u.exercises));
+      const currentIndex = allExercises.findIndex(e => e.id === ex.id);
+      const nextEx = currentIndex < allExercises.length - 1 ? allExercises[currentIndex + 1] : null;
+
       summaryBox.innerHTML = `
-        <div class="result-badge ${percent >= 70 ? "badge-success" : "badge-warning"}">
-          Natijangiz: <strong>${correctCount} / ${totalQuestions}</strong> (${percent}%)
+        <div class="result-box-wrapper">
+          <div class="result-badge ${percent >= 70 ? "badge-success" : "badge-warning"}">
+            Natijangiz: <strong>${correctCount} / ${totalQuestions}</strong> (${percent}%)
+          </div>
+          ${nextEx ? `
+            <button id="summaryNextBtn" class="btn btn-primary btn-lg" data-target-id="${nextEx.id}">
+              Keyingi mashqqa o'tish (Ex ${nextEx.number}) ➔
+            </button>
+          ` : `
+            <button id="summaryLeaderboardBtn" class="btn btn-warning btn-lg">
+              🏆 Barcha mashqlar tugadi! Reytingni ko'rish ➔
+            </button>
+          `}
         </div>
       `;
+
+      const summaryNextBtn = document.getElementById("summaryNextBtn");
+      if (summaryNextBtn) {
+        summaryNextBtn.onclick = () => {
+          this.openExerciseById(summaryNextBtn.getAttribute("data-target-id"));
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+      }
+      const summaryLdBtn = document.getElementById("summaryLeaderboardBtn");
+      if (summaryLdBtn) {
+        summaryLdBtn.onclick = () => {
+          this.switchView("leaderboard");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+      }
     }
 
     // Agar tizimga kirgan bo'lsa, natijani saqlaymiz!
