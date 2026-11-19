@@ -1,0 +1,21 @@
+{
+  "name": "basic-ielts-listening",
+  "version": "1.0.0",
+  "description": "Basic IELTS Listening interactive web app with leaderboard and audio trainer",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "dependencies": {
+    "firebase": "^9.23.0"
+  },
+  "keywords": [
+    "ielts",
+    "listening",
+    "english",
+    "interactive",
+    "leaderboard"
+  ],
+  "author": "Aliahmad",
+  "license": "MIT"
+}

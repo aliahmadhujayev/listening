@@ -1,27 +1,19 @@
 /**
  * Firebase Configuration File
- * =====================================================================
- * Agar siz natijalar barcha qurilmalar va foydalanuvchilar o'rtasida
- * umumiy bulutda saqlanishini va reyting barchaga ko'rinishini istasangiz:
- * 
- * 1. https://console.firebase.google.com saytiga kiring.
- * 2. "Add project" (Loyiha yaratish) tugmasini bosing.
- * 3. Loyiha ichida "Build" -> "Firestore Database" bo'limiga o'tib, "Create database" qiling (Test mode tanlang).
- * 4. "Project Settings" (Sozlamalar tishi) -> "General" -> "Your apps" bo'limidan Web (</>) belgisini bosing.
- * 5. Chiqqan konfiguratsiya qiymatlarini quyidagi firebaseConfig obyektiga qo'ying.
- * =====================================================================
+ * Loyiha: listening-6e542
  */
 
 window.firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyC1dTGlbCdbL7ziHeF-ooctzUgndQO4Gtg",
+  authDomain: "listening-6e542.firebaseapp.com",
+  projectId: "listening-6e542",
+  storageBucket: "listening-6e542.firebasestorage.app",
+  messagingSenderId: "682990244075",
+  appId: "1:682990244075:web:33235436f04be945ae6eae",
+  measurementId: "G-S4E4M9003Q"
 };
 
-// Config to'ldirilganligini avtomatik aniqlash
+// Config to'ldirilganligini tekshirish
 window.isFirebaseConfigured = function() {
   return window.firebaseConfig &&
          window.firebaseConfig.apiKey &&
