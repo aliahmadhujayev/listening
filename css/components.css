@@ -959,6 +959,29 @@
   margin-bottom: 16px;
 }
 
+.remember-group {
+  margin-top: 10px;
+  margin-bottom: 14px;
+}
+
+.checkbox-label {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--text-secondary);
+  user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
 .form-group label {
   display: block;
   font-size: 13px;

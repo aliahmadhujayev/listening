@@ -28,6 +28,9 @@ class App {
     this.bindGlobalEvents();
     this.renderSidebarExercises();
 
+    // Qurilma eslab qolinganligini tekshirish (Auto-login)
+    await window.authManager.autoLoginIfRemembered();
+
     // Foydalanuvchi kirmagan bo'lsa login modalini ochish
     if (!window.authManager.isLoggedIn()) {
       this.showLoginModal();
@@ -776,8 +779,10 @@ class App {
         e.preventDefault();
         const rawName = nameInput.value;
         const rawPhone = phoneInput.value;
+        const rememberCheckbox = document.getElementById("rememberDeviceCheckbox");
+        const rememberDevice = rememberCheckbox ? rememberCheckbox.checked : true;
 
-        const res = await window.authManager.login(rawName, rawPhone);
+        const res = await window.authManager.login(rawName, rawPhone, rememberDevice);
         if (!res.success) {
           loginError.style.display = "block";
           loginError.textContent = res.message;
@@ -785,7 +790,6 @@ class App {
           loginError.style.display = "none";
           this.hideLoginModal();
           this.updateUserUI();
-          alert(res.message);
           // Agar joriy mashq ochiq bo'lsa, saqlangan javoblarini tiklash
           this.restoreUserAnswersForCurrentExercise();
         }

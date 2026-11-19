@@ -1,7 +1,9 @@
 /**
  * Authentication Module
- * 7 xonali noyob ID va Bosh harf bilan boshlanadigan ism tizimi.
+ * 7 xonali noyob ID, Bosh harf bilan boshlanadigan ism va Qurilmani eslab qolish (Auto-login) tizimi.
  */
+
+const STORAGE_REMEMBER_DEVICE_KEY = "ielts_device_registered_phone";
 
 class AuthManager {
   constructor() {
@@ -10,7 +12,22 @@ class AuthManager {
   }
 
   init() {
+    // 1. Dastlabki saqlangan joriy foydalanuvchini olish
     this.currentUser = window.storageManager.getCurrentUser();
+  }
+
+  // Qurilma eslab qolinganligini tekshirish va avtomatik profilni tiklash
+  async autoLoginIfRemembered() {
+    const rememberedPhone = localStorage.getItem(STORAGE_REMEMBER_DEVICE_KEY);
+    if (rememberedPhone) {
+      const user = await window.storageManager.getUserByPhone(rememberedPhone);
+      if (user) {
+        this.currentUser = user;
+        window.storageManager.setCurrentUser(user);
+        return user;
+      }
+    }
+    return this.currentUser;
   }
 
   // Ism formatlash: Birinchi harfni katta qilish
@@ -24,7 +41,6 @@ class AuthManager {
   // 7 xonali raqamni tekshirish
   static validatePhone(phone) {
     const cleanPhone = String(phone).trim();
-    // Faqat 7 ta raqam bo'lishi kerak
     const regex = /^\d{7}$/;
     return {
       isValid: regex.test(cleanPhone),
@@ -33,7 +49,7 @@ class AuthManager {
   }
 
   // Kirish yoki Ro'yxatdan o'tish
-  async login(rawName, rawPhone) {
+  async login(rawName, rawPhone, rememberDevice = true) {
     const name = AuthManager.formatName(rawName);
     if (!name) {
       return { success: false, message: "Iltimos, ismingizni kiriting." };
@@ -78,18 +94,24 @@ class AuthManager {
     this.currentUser = user;
     window.storageManager.setCurrentUser(user);
 
+    // Qurilmani doimiy eslab qolish
+    if (rememberDevice) {
+      localStorage.setItem(STORAGE_REMEMBER_DEVICE_KEY, phoneId);
+    }
+
     return {
       success: true,
       user: user,
       isNewUser: isNewUser,
       message: isNewUser
-        ? `Xush kelibsiz, ${user.name}! Siz uchun yangi profil ochildi.`
-        : `Xush kelibsiz, ${user.name}! Saqlangan natijalaringiz yuklandi.`
+        ? `Xush kelibsiz, ${user.name}! Profil ochildi va qurilmangiz eslab qolindi.`
+        : `Xush kelibsiz, ${user.name}! Natijalaringiz yuklandi va qurilmangiz eslab qolindi.`
     };
   }
 
   logout() {
     this.currentUser = null;
+    localStorage.removeItem(STORAGE_REMEMBER_DEVICE_KEY);
     window.storageManager.clearCurrentUser();
   }
 
