@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="uz" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Basic IELTS Listening — Interaktiv Mashqlar & Reyting</title>
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  
+  <!-- Favicon / Meta -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎧</text></svg>">
+  
+  <!-- Firebase SDK (Compat Version - Hostingda ishlatish uchun tayyor) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+  <div class="app-layout">
+    <!-- ====================================================================
+         Sidebar (Chap Menyu)
+         ==================================================================== -->
+    <aside id="appSidebar" class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="brand-box">
+          <span class="brand-icon">🎧</span>
+          <div>
+            <div class="brand-title">Basic IELTS</div>
+            <div class="brand-sub">Listening Trainer</div>
+          </div>
+        </div>
+        <button id="closeSidebarBtn" class="close-sidebar-btn" title="Yopish">✕</button>
+      </div>
+
+      <!-- User Card (Login bo'lganda ko'rinadi) -->
+      <div id="sidebarUserCard" class="sidebar-user-card" style="display: none;">
+        <div class="user-avatar-circle" id="sidebarAvatarCircle">A</div>
+        <div class="user-meta-info">
+          <div id="sidebarUserName" class="user-meta-name">Foydalanuvchi</div>
+          <div id="sidebarUserId" class="user-meta-id">ID: 0000000</div>
+          <div id="sidebarUserScore" class="user-meta-score">0/11 mashq (0%)</div>
+        </div>
+      </div>
+
+      <!-- Login Prompt (Login bo'lmaganda) -->
+      <div id="sidebarLoginPrompt" class="sidebar-login-prompt">
+        <p class="text-sm text-muted mb-2">Natijalaringizni saqlash va reytingda qatnashish uchun kiring</p>
+        <button id="sidebarLoginBtn" class="btn btn-primary btn-sm btn-block">Kirish / Ro'yxatdan o'tish</button>
+      </div>
+
+      <!-- Main Navigation Menu -->
+      <nav class="sidebar-nav-section">
+        <ul class="main-nav-list">
+          <li>
+            <a href="javascript:void(0)" class="main-nav-link active" data-view="exercise">
+              <span class="nav-icon">📖</span>
+              <span>Mashqlar</span>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" class="main-nav-link" data-view="leaderboard">
+              <span class="nav-icon">🏆</span>
+              <span>Reyting (Leaderboard)</span>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" class="main-nav-link" data-view="dashboard">
+              <span class="nav-icon">📊</span>
+              <span>Shaxsiy Panel</span>
+            </a>
+          </li>
+          <li>
+            <a href="javascript:void(0)" class="main-nav-link" data-view="admin">
+              <span class="nav-icon">⚙️</span>
+              <span>Admin Panel</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-divider-label">Unit 1: Mashqlar Ro'yxati</div>
+        <div id="sidebarExerciseList" class="exercise-nav-tree"></div>
+      </nav>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <button id="themeToggleBtn" class="btn btn-secondary btn-sm btn-block">
+          🌙 Dark Mode
+        </button>
+        <button id="sidebarLogoutBtn" class="btn btn-outline btn-sm btn-block text-danger">
+          Chiqish
+        </button>
+      </div>
+    </aside>
+
+    <!-- ====================================================================
+         Main Workspace
+         ==================================================================== -->
+    <main class="app-main">
+      <!-- Top Sticky Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <button id="hamburgerBtn" class="hamburger-btn" title="Menyuni ochish">☰</button>
+          <div class="current-view-title">Basic IELTS Listening — Unit 1</div>
+        </div>
+        <div class="header-right">
+          <span class="badge badge-success text-xs">Unit 1: 11 ta mashq</span>
+        </div>
+      </header>
+
+      <!-- Content Container -->
+      <div class="content-container">
+
+        <!-- 1. EXERCISE VIEW -->
+        <section id="exerciseView">
+          <!-- Audio Player Top Box -->
+          <div id="audioPlayerContainer"></div>
+
+          <!-- Dynamic Exercise Workspace Area -->
+          <div id="exerciseWorkArea"></div>
+        </section>
+
+        <!-- 2. LEADERBOARD VIEW -->
+        <section id="leaderboardView" style="display: none;"></section>
+
+        <!-- 3. DASHBOARD & ADMIN VIEW -->
+        <section id="dashboardView" style="display: none;"></section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ====================================================================
+       Login / Register Modal
+       ==================================================================== -->
+  <div id="loginModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-icon">🎧</div>
+        <h2>IELTS Listening Kirish</h2>
+        <p class="text-sm text-muted">Ismingiz va 7 xonali telefon raqamingiz orqali shaxsiy kabinetingizga kiring</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="loginNameInput">Ismingiz (yoki bosh harf):</label>
+          <input 
+            type="text" 
+            id="loginNameInput" 
+            class="form-control" 
+            placeholder="Masalan: Ali yoki A" 
+            required 
+            autocomplete="name"
+          />
+          <div class="input-hint">Ismning birinchi harfi avtomatik katta harfga o'giriladi.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="loginPhoneInput">Telefon raqam (oxirgi 7 ta raqam):</label>
+          <input 
+            type="text" 
+            id="loginPhoneInput" 
+            class="form-control" 
+            placeholder="Masalan: 1234567" 
+            maxlength="7" 
+            required 
+            autocomplete="tel"
+          />
+          <div class="input-hint">Operator kodi (+998, 90, 91 va h.k.) shart emas, faqat 7 ta raqam. Bu sizning noyob ID raqamingiz bo'ladi.</div>
+        </div>
+
+        <div id="loginErrorMessage" class="error-msg" style="display: none;"></div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg mt-3">
+          Kirish va Boshlash 🚀
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules in Dependency Order -->
+  <script src="js/firebase-config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/audio-player.js"></script>
+  
+  <!-- Data Modules -->
+  <script src="js/data/unit1.js"></script>
+  <script src="js/data/index.js"></script>
+  
+  <!-- Views & Application Logic -->
+  <script src="js/leaderboard.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

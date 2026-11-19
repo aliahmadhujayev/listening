@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100" height="100">
+  <circle cx="60" cy="60" r="56" fill="#fdf2f8" stroke="#db2777" stroke-width="3"/>
+  <circle cx="60" cy="48" r="22" fill="#fbcfe8"/>
+  <path d="M 34 52 C 34 22, 86 22, 86 52 C 78 36, 42 36, 34 52 Z" fill="#9d174d"/>
+  <circle cx="53" cy="48" r="3" fill="#500724"/>
+  <circle cx="67" cy="48" r="3" fill="#500724"/>
+  <path d="M 54 58 Q 60 63 66 58" stroke="#db2777" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M 30 102 C 30 80, 90 80, 90 102 Z" fill="#f43f5e"/>
+  <text x="60" y="114" font-family="sans-serif" font-size="10" font-weight="bold" fill="#500724" text-anchor="middle">7. Sue</text>
+</svg>

@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 500" width="100%" height="auto" style="background:#f8fafc; border-radius:16px;">
+  <defs>
+    <filter id="cShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.1" />
+    </filter>
+  </defs>
+
+  <!-- Title Banner -->
+  <rect x="25" y="15" width="800" height="42" rx="8" fill="#1e293b" />
+  <text x="425" y="42" font-family="'Segoe UI', Roboto, sans-serif" font-size="17" font-weight="bold" fill="#38bdf8" text-anchor="middle">EXERCISE 7: THE MAPS OF SOME COUNTRIES</text>
+
+  <!-- JAPAN -->
+  <g transform="translate(410, 80)" filter="url(#cShadow)">
+    <rect width="120" height="90" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2" />
+    <!-- Mini country outline stylization -->
+    <path d="M 40 70 Q 55 45 65 20 Q 75 15 80 25 Q 70 50 50 75 Z" fill="#818cf8" opacity="0.6" />
+    <text x="60" y="35" font-family="sans-serif" font-size="14" font-weight="bold" fill="#312e81" text-anchor="middle">JAPAN</text>
+    <rect x="15" y="55" width="90" height="24" rx="4" fill="#ffffff" stroke="#c7d2fe" />
+    <text x="60" y="71" font-family="sans-serif" font-size="11" font-weight="bold" fill="#4338ca" text-anchor="middle">Ms. Su Hee</text>
+  </g>
+
+  <!-- AUSTRALIA -->
+  <g transform="translate(560, 75)" filter="url(#cShadow)">
+    <rect width="180" height="120" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2" />
+    <path d="M 30 50 Q 80 20 130 35 Q 160 65 140 100 Q 80 110 40 85 Z" fill="#fcd34d" opacity="0.6" />
+    <text x="90" y="45" font-family="sans-serif" font-size="16" font-weight="bold" fill="#78350f" text-anchor="middle">AUSTRALIA</text>
+    <text x="90" y="95" font-family="sans-serif" font-size="12" fill="#92400e" text-anchor="middle">(Oceania Continent)</text>
+  </g>
+
+  <!-- BRAZIL -->
+  <g transform="translate(180, 200)" filter="url(#cShadow)">
+    <rect width="150" height="150" rx="8" fill="#dcfce7" stroke="#22c55e" stroke-width="2" />
+    <path d="M 30 30 Q 90 20 125 60 Q 135 110 80 135 Q 35 100 30 30 Z" fill="#86efac" opacity="0.6" />
+    <text x="75" y="50" font-family="sans-serif" font-size="15" font-weight="bold" fill="#14532d" text-anchor="middle">BRAZIL</text>
+    <rect x="25" y="105" width="100" height="26" rx="4" fill="#ffffff" stroke="#bbf7d0" />
+    <text x="75" y="122" font-family="sans-serif" font-size="11" font-weight="bold" fill="#15803d" text-anchor="middle">South America</text>
+  </g>
+
+  <!-- GERMANY -->
+  <g transform="translate(50, 180)" filter="url(#cShadow)">
+    <rect width="115" height="100" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2" />
+    <path d="M 25 25 Q 75 15 90 45 Q 85 85 40 85 Z" fill="#fca5a5" opacity="0.6" />
+    <text x="58" y="42" font-family="sans-serif" font-size="13" font-weight="bold" fill="#7f1d1d" text-anchor="middle">GERMANY</text>
+    <rect x="10" y="65" width="95" height="24" rx="4" fill="#ffffff" stroke="#fecaca" />
+    <text x="58" y="81" font-family="sans-serif" font-size="11" font-weight="bold" fill="#b91c1c" text-anchor="middle">Shirley Maclain</text>
+  </g>
+
+  <!-- FRANCE -->
+  <g transform="translate(360, 260)" filter="url(#cShadow)">
+    <rect width="125" height="110" rx="8" fill="#e0f2fe" stroke="#0284c7" stroke-width="2" />
+    <path d="M 30 25 Q 85 20 100 55 Q 85 95 35 85 Z" fill="#7dd3fc" opacity="0.6" />
+    <text x="63" y="45" font-family="sans-serif" font-size="14" font-weight="bold" fill="#075985" text-anchor="middle">FRANCE</text>
+    <rect x="15" y="70" width="95" height="24" rx="4" fill="#ffffff" stroke="#bae6fd" />
+    <text x="63" y="86" font-family="sans-serif" font-size="11" font-weight="bold" fill="#0369a1" text-anchor="middle">Marti White</text>
+  </g>
+
+  <!-- ITALY -->
+  <g transform="translate(510, 260)" filter="url(#cShadow)">
+    <rect width="115" height="120" rx="8" fill="#f3e8ff" stroke="#a855f7" stroke-width="2" />
+    <path d="M 35 25 Q 65 30 75 55 Q 60 90 70 105 Q 45 105 40 75 Z" fill="#d8b4fe" opacity="0.6" />
+    <text x="58" y="42" font-family="sans-serif" font-size="14" font-weight="bold" fill="#581c87" text-anchor="middle">ITALY</text>
+    <rect x="10" y="80" width="95" height="24" rx="4" fill="#ffffff" stroke="#e9d5ff" />
+    <text x="58" y="96" font-family="sans-serif" font-size="11" font-weight="bold" fill="#7e22ce" text-anchor="middle">Emilio Beatty</text>
+  </g>
+
+  <!-- MEXICO -->
+  <g transform="translate(650, 240)" filter="url(#cShadow)">
+    <rect width="145" height="110" rx="8" fill="#ffedd5" stroke="#f97316" stroke-width="2" />
+    <path d="M 20 30 Q 75 35 125 50 Q 115 85 55 80 Z" fill="#fdba74" opacity="0.6" />
+    <text x="73" y="42" font-family="sans-serif" font-size="14" font-weight="bold" fill="#7c2d12" text-anchor="middle">MEXICO</text>
+    <rect x="15" y="68" width="115" height="24" rx="4" fill="#ffffff" stroke="#fed7aa" />
+    <text x="73" y="84" font-family="sans-serif" font-size="11" font-weight="bold" fill="#c2410c" text-anchor="middle">Charlie Smith</text>
+  </g>
+
+  <!-- Instruction footer -->
+  <rect x="25" y="420" width="800" height="60" rx="8" fill="#ffffff" stroke="#cbd5e1" />
+  <text x="40" y="445" font-family="sans-serif" font-size="13" font-weight="bold" fill="#0f172a">Task A &amp; B Mosligi (10.mp3):</text>
+  <text x="40" y="465" font-family="sans-serif" font-size="12" fill="#475569">Japan ➔ Ms. Su Hee | Mexico ➔ Charlie Smith | Germany ➔ Shirley Maclain | Italy ➔ Emilio Beatty | France ➔ Marti White</text>
+</svg>
